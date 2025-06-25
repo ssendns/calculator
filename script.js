@@ -31,3 +31,40 @@ const operate = function(operator, a, b) {
             return "error";
     }
 };
+
+const display = document.querySelector('#display');
+const buttons = document.querySelectorAll('.btn');
+
+let input = '';
+let operator = null;
+let a = null;
+
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        const value = button.textContent;
+
+        if (!isNaN(value)) {
+            input += value;
+            display.textContent = input;
+        } else if (value === 'C') {
+            input = '';
+            operator = null;
+            a = null;
+            display.textContent = '0';
+        } else if (value === '=') {
+            if (a !== null && operator && input !== '') {
+                const b = parseFloat(input);
+                const result = operate(operator, a, b);
+                display.textContent = result;
+                input = '' + result;
+                a = null;
+                operator = null;
+            }
+        } else {
+            a = parseFloat(input);
+            operator = value;
+            input = '';
+            display.textContent = operator;
+        }
+    });
+});
